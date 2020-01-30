@@ -128,6 +128,30 @@ Rule for z index is the elements must be positioned and the one with greater z-i
     padding: 3% 2%;
 }
 
+/* CTA Section */
+#cta {
+    background-color: #FF4C68;
+    color: #FFF;
+    text-align: center;
+    padding: 7% 15%;
+}
+
+.cta-heading {
+    font-family: "Montserrat-Black";
+    font-size: 3.5rem;
+    line-height: 1.5;
+}
+
+/* Footer Section */
+#footer {
+    text-align: center;
+    padding: 7% 15%;
+}
+
+.social-icon {
+    margin: 20px 10px;
+}
+
 /* We want to make our website responsive so we use the @media keyword to target smaller screens and make our image appear better */
 @media (max-width : 1028px){
     #title {
@@ -139,3 +163,4 @@ Rule for z index is the elements must be positioned and the one with greater z-i
         transform: rotate(0);
     }
 }
+
