@@ -127,3 +127,15 @@ Rule for z index is the elements must be positioned and the one with greater z-i
 .pricing-column {
     padding: 3% 2%;
 }
+
+/* We want to make our website responsive so we use the @media keyword to target smaller screens and make our image appear better */
+@media (max-width : 1028px){
+    #title {
+        text-align: center;
+    }
+
+    .title-image {
+        position: static;
+        transform: rotate(0);
+    }
+}
