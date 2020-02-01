@@ -16,3 +16,14 @@ document.querySelector('li a').style.color = 'red';
 
 //Changing the style from DOM requires no dashes but camelcase
 document.querySelector('.btn').style.backgroundColor = "yellow";
+
+//Classlist shows the list of classes of the selected element--- see the css for added class
+document.querySelector('.btn').classList.add('btn-test');
+document.querySelector('.btn').classList.remove('btn-test');
+
+//innerHTML returns the text content along with any tags of the elements
+//textContent returns only the text associated with the element
+document.querySelector('h1').innerHTML = "<em>Test inner html</em>"
+
+//Attributes -- the attribute of an element ex. classes,id,href ...
+document.querySelector('a').setAttribute('href','https://www.bing.com')
