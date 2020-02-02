@@ -32,3 +32,14 @@ $("button").click(function(){
 $(document).keypress(function(e){
     $("h1").text(e.key)
 });
+
+//Animations
+$("button").click(function(){
+    //$("h1").hide();
+    //$("h1").toggle();
+    //$("h1").fadeOut();
+    //$("h1").slideUp();
+
+    //We can use our custom animation
+    $("h1").animate({opacity:0.5});
+});
