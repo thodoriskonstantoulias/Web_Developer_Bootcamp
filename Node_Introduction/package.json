@@ -1,0 +1,15 @@
+{
+  "name": "node_introduction",
+  "version": "1.0.0",
+  "description": "This is an intro to node project.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ted Kos",
+  "license": "ISC",
+  "dependencies": {
+    "superheroes": "^3.0.0",
+    "supervillains": "^3.0.0"
+  }
+}
