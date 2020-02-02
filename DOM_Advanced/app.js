@@ -44,12 +44,14 @@ for (var i = 0; i < document.querySelectorAll('.drum').length; i++){
     document.querySelectorAll('.drum')[i].addEventListener('click',function(){
         //console.log(this);
         makeSound(this.innerHTML);
+        buttonAnimation(this.innerHTML);
     });
 }
 
 //Keyboard events 
 document.addEventListener("keydown" , function(e){
     makeSound(e.key);
+    buttonAnimation(e.key);
 });
 
 //Common function for making a sound - both button and keyboard event should listen to that function
@@ -82,4 +84,16 @@ function makeSound(key){
     //The following plays sound
     //var audio = new Audio('sounds/crash.mp3');
     audio.play();
+}
+
+//Animation when a button or keyboard is pressed
+function buttonAnimation(key){
+    var activeButton = document.querySelector("." + key);
+    activeButton.classList.add("pressed");
+
+    //Disable the button after 1 second
+    setTimeout(() => {
+        activeButton.classList.remove("pressed"); 
+    }, 1000);
+
 }
