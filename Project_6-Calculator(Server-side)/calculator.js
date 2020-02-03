@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const app = express();
 app.use(bodyParser.urlencoded({extended : true}));
 
+//Simple calculator ------------
 //Below if we navigate to the home url we will send a response with the associated html file
 app.get("/", function(req,res){
     res.sendFile(__dirname + "/index.html")
@@ -18,6 +19,23 @@ app.post("/", function(req,res){
     
     res.send("The result of the calculation is : " + result);
 });
+
+//------------------
+
+//BMI Calculator ----------------
+app.get("/bmicalculator", function(req,res){
+    res.sendFile(__dirname + "/bmiCalculator.html")
+});
+
+app.post("/bmicalculator", function(req,res){
+    var weight = parseFloat(req.body.weight);
+    var height = parseFloat(req.body.height);
+    var bmi = weight/Math.pow(height,2);
+
+    res.send("The result of the BMI calculation is : " + bmi);
+});
+
+//---------------------------
 
 //Our server must listen to a port
 app.listen(3000, function(){
