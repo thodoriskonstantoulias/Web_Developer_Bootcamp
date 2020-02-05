@@ -17,8 +17,20 @@ app.post("/", function(req,res){
     var firstName = req.body.firstName;
     var lastName = req.body.lastName;
     var email = req.body.email;
+    //Just for testing the pages
+    var success = false;
+
+    if(success){
+        res.sendFile(__dirname + "/success.html");
+    } else {
+        res.sendFile(__dirname + "/failure.html");
+    }
 
     console.log(firstName,lastName,email);
+});
+
+app.post("/failure", function(req,res){
+    res.redirect("/");
 });
 
 app.listen(3000, function(){
