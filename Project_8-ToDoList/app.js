@@ -1,11 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+//Require our new custom module
+const date = require(__dirname + "/date.js");
 
 const app = express();
 
 //Declare global variables
-let items = [];
-let workItems = [];
+const items = [];
+const workItems = [];
 
 //We will use EJS to embed code to html 
 app.set("view engine", "ejs");
@@ -20,15 +22,9 @@ app.use(bodyParser.urlencoded({extended : true}));
 //or sendFile() to send an html page with whatever we want
 //or send a template such as EJS here with res.render();
 app.get("/", function(req,res){
-    let today = new Date();
 
-    let options = {
-        weekday : "long",
-        day : "numeric",
-        month : "long"
-    };
-
-    let day = today.toLocaleDateString("en-US", options);
+    //We call our module here 
+    const day = date.getDate();
 
     res.render("list", {listTitle : day, itemsToAdd : items});
 });   
