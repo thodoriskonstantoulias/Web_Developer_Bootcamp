@@ -4,10 +4,13 @@ const bodyParser = require("body-parser");
 const app = express();
 
 //Declare global variables
-var items = [];
+let items = [];
 
 //We will use EJS to embed code to html 
 app.set("view engine", "ejs");
+
+//We need to include the static folders to our server 
+app.use(express.static("public"));
 
 app.use(bodyParser.urlencoded({extended : true}));
 
@@ -16,15 +19,15 @@ app.use(bodyParser.urlencoded({extended : true}));
 //or sendFile() to send an html page with whatever we want
 //or send a template such as EJS here with res.render();
 app.get("/", function(req,res){
-    var today = new Date();
+    let today = new Date();
 
-    var options = {
+    let options = {
         weekday : "long",
         day : "numeric",
         month : "long"
     };
 
-    var day = today.toLocaleDateString("en-US", options);
+    let day = today.toLocaleDateString("en-US", options);
 
     res.render("list", {kindOfDay : day, itemsToAdd : items});
 });
