@@ -3,6 +3,9 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
+//Declare global variables
+var items = [];
+
 //We will use EJS to embed code to html 
 app.set("view engine", "ejs");
 
@@ -14,35 +17,22 @@ app.use(bodyParser.urlencoded({extended : true}));
 //or send a template such as EJS here with res.render();
 app.get("/", function(req,res){
     var today = new Date();
-    var currentDay = today.getDay();
-    var day = "";
 
-    switch(currentDay){
-        case 0:
-            day = "Sunday";
-            break;
-        case 1:
-            day = "Monday";
-            break; 
-        case 2:
-            day = "Tuesday";
-            break;
-        case 3:
-            day = "Wednesday";
-            break;
-        case 4:
-            day = "Thursday";
-            break;
-        case 5:
-            day = "Friday";
-            break;
-        case 6:
-            day = "Saturday";
-            break; 
-        default:
-            console.log("Error");      
-    }
-    res.render("list", {kindOfDay : day});
+    var options = {
+        weekday : "long",
+        day : "numeric",
+        month : "long"
+    };
+
+    var day = today.toLocaleDateString("en-US", options);
+
+    res.render("list", {kindOfDay : day, itemsToAdd : items});
+});
+
+app.post("/", function(req,res){
+    items.push(req.body.task); 
+
+    res.redirect("/");
 });
 
 app.listen(3000, function(){
