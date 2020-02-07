@@ -46,6 +46,16 @@ app.post("/compose", function(req,res){
   res.redirect("/");
 });
 
+//Routing of a page with route parameters in the url
+app.get("/posts/:something", function(req,res){
+  //Exercise : if the request param of url is contained in any blog title console match found
+  posts.forEach(function(post){
+    if (post.title === req.params.something){
+      console.log("Match found!");
+    }
+  });
+});
+
 
 
 
