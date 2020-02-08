@@ -8,8 +8,8 @@ const date = require(__dirname + "/date.js");
 const app = express();
 
 //Declare global variables
-const items = [];
-const workItems = [];
+// const items = [];
+// const workItems = [];
 
 //We will use EJS to embed code to html 
 app.set("view engine", "ejs");
@@ -72,13 +72,20 @@ app.get("/", function(req,res){
 
 //We check the value of button to see from which page we came from
 app.post("/", function(req,res){
-    if (req.body.list === "Work"){
-        workItems.push(req.body.task); 
-        res.redirect("/work");
-    } else {
-        items.push(req.body.task); 
-        res.redirect("/");
-    }   
+    const item = req.body.task;
+
+    //When posted the new entry will be inserted in the database
+    const itemToInsert = new Item({name: item});
+    itemToInsert.save();
+    res.redirect("/");
+
+    // if (req.body.list === "Work"){ 
+    //     workItems.push(req.body.task); 
+    //     res.redirect("/work");
+    // } else {
+    //     items.push(req.body.task); 
+    //     res.redirect("/");
+    // }   
 });
 
 app.get("/work", function(req,res){
