@@ -5,9 +5,17 @@ const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/fruitDB", {useNewUrlParser: true, useUnifiedTopology: true});
 
 //Create the schema
+//Apply validation
 const fruitSchema = new mongoose.Schema({
-    name: String,
-    rating: Number,
+    name: {
+        type: String,
+        required : [true, "No name entered!!!"]
+    },
+    rating: {
+        type: Number,
+        min: 1,
+        max :10
+    },
     review: String
 });
 
@@ -16,9 +24,9 @@ const Fruit = mongoose.model("Fruit", fruitSchema);
 
 //Create new document
 const fruit = new Fruit({
-    name: "Apple",
-    rating: 7,
-    review: "Pretty good"
+    name: "Peach",
+    rating: 9,
+    review: "Pretty good fruit"
 });
 
 //Save to database 
@@ -44,21 +52,21 @@ const person = new Person({
 //person.save();
 
 //Insert many fruits together
-const kiwi = new Fruit({
-    name: "Kiwi",
-    rating: 8,
-    review: "Pretty good"
-});
-const orange = new Fruit({
-    name: "Orange",
-    rating: 8,
-    review: "Pretty good"
-});
-const banana = new Fruit({
-    name: "Banana",
-    rating: 8,
-    review: "Pretty good"
-});
+// const kiwi = new Fruit({
+//     name: "Kiwi",
+//     rating: 8,
+//     review: "Pretty good"
+// });
+// const orange = new Fruit({
+//     name: "Orange",
+//     rating: 8,
+//     review: "Pretty good"
+// });
+// const banana = new Fruit({
+//     name: "Banana",
+//     rating: 8,
+//     review: "Pretty good"
+// });
 
 // Fruit.insertMany([kiwi,orange,banana], function(err){
 //     if(err){
