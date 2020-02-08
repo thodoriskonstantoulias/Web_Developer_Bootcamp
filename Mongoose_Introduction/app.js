@@ -23,30 +23,47 @@ const fruitSchema = new mongoose.Schema({
 const Fruit = mongoose.model("Fruit", fruitSchema);
 
 //Create new document
-const fruit = new Fruit({
-    name: "Peach",
-    rating: 9,
-    review: "Pretty good fruit"
-});
+// const fruit = new Fruit({
+//     name: "Peach",
+//     rating: 9,
+//     review: "Pretty good fruit"
+// });
 
 //Save to database 
 //fruit.save();
 
+
 //Exercise : Create a new person document
 //Create the schema
+//Relationships in NoSQL
 const personSchema = new mongoose.Schema({
     name: String,
-    age: Number
+    age: Number,
+    favouriteFruit: fruitSchema
 });
 
 //Create the "table" persons
 const Person = mongoose.model("Person", personSchema);
 
-//Create new document
-const person = new Person({
-    name: "Ted",
-    age: 28
+//Insert fruit to use for person to test relationships
+const kiwi = new Fruit({
+    name: "Kiwi",
+    rating: 8,
+    review: "Pretty good"
 });
+kiwi.save();
+const person = new Person({
+    name: "Anna",
+    age: 20,
+    favouriteFruit : kiwi
+});
+person.save();
+
+//Create new document
+// const person = new Person({
+//     name: "Ted",
+//     age: 28
+// });
 
 //Save to database 
 //person.save();
@@ -90,29 +107,41 @@ Fruit.find(function(err, fruits){
     }
 });
 
-//Update data 
-Fruit.updateOne({name:"Peach"},{name:"Strawberry"}, function(err){
-    if (err){
+Person.find(function(err, persons){
+    if(err){
         console.log(err);
     } else {
-        console.log("Updated!!!");
-    }  
-}); 
+        mongoose.connection.close();
+        
+        persons.forEach(function(person){
+            console.log(person);
+        });
+    }
+});
+
+//Update data 
+// Fruit.updateOne({name:"Peach"},{name:"Strawberry"}, function(err){
+//     if (err){
+//         console.log(err);
+//     } else {
+//         console.log("Updated!!!");
+//     }  
+// }); 
 
 //Delete data 
-Fruit.deleteOne({name:"Apple"}, function(err){
-    if (err){
-        console.log(err);
-    } else {
-        console.log("Deleted!!!");
-    }  
-}); 
+// Fruit.deleteOne({name:"Apple"}, function(err){
+//     if (err){
+//         console.log(err);
+//     } else {
+//         console.log("Deleted!!!");
+//     }  
+// }); 
 
 //Delete many data instead of one 
-Fruit.deleteMany({name:"Peach"}, function(err){
-    if (err){
-        console.log(err);
-    } else {
-        console.log("Deleted records!!!");
-    }  
-}); 
+// Fruit.deleteMany({name:"Peach"}, function(err){
+//     if (err){
+//         console.log(err);
+//     } else {
+//         console.log("Deleted records!!!");
+//     }  
+// }); 
