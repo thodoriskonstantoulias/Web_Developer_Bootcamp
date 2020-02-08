@@ -60,10 +60,24 @@ const banana = new Fruit({
     review: "Pretty good"
 });
 
-Fruit.insertMany([kiwi,orange,banana], function(err){
+// Fruit.insertMany([kiwi,orange,banana], function(err){
+//     if(err){
+//         console.log(err);
+//     } else {
+//         console.log("Successfully saved all the fruits");
+//     }
+// });
+
+//How to find data from our mongoDB documents
+//Also it's good practice to close the connection after our last command
+Fruit.find(function(err, fruits){
     if(err){
         console.log(err);
     } else {
-        console.log("Successfully saved all the fruits");
+        mongoose.connection.close();
+        
+        fruits.forEach(function(fruit){
+            console.log(fruit.name);
+        });
     }
 });
