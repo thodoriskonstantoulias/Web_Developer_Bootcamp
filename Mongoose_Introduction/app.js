@@ -89,3 +89,30 @@ Fruit.find(function(err, fruits){
         });
     }
 });
+
+//Update data 
+Fruit.updateOne({name:"Peach"},{name:"Strawberry"}, function(err){
+    if (err){
+        console.log(err);
+    } else {
+        console.log("Updated!!!");
+    }  
+}); 
+
+//Delete data 
+Fruit.deleteOne({name:"Apple"}, function(err){
+    if (err){
+        console.log(err);
+    } else {
+        console.log("Deleted!!!");
+    }  
+}); 
+
+//Delete many data instead of one 
+Fruit.deleteMany({name:"Peach"}, function(err){
+    if (err){
+        console.log(err);
+    } else {
+        console.log("Deleted records!!!");
+    }  
+}); 
