@@ -33,13 +33,13 @@ const item2 = new Item({name:"Gym"});
 const defaultItems = [item1,item2];
 
 //Insert the above items to db
-Item.insertMany(defaultItems,function(err){
-    if (err){
-        console.log(err);
-    } else {
-        console.log("Data inserted!!!");
-    }
-});
+// Item.insertMany(defaultItems,function(err){
+//     if (err){
+//         console.log(err);
+//     } else {
+//         console.log("Data inserted!!!");
+//     }
+// });
 
 //Instead of just sending some text we could write some logic 
 //res.write() to send multiple statements 
@@ -47,10 +47,27 @@ Item.insertMany(defaultItems,function(err){
 //or send a template such as EJS here with res.render();
 app.get("/", function(req,res){
 
+    //Get out items from database
+    Item.find(function(err,foundItems){
+        //Check if the array is empty so to not insert the initial data many times
+        if (foundItems.length === 0){
+            Item.insertMany(defaultItems,function(err){
+            if (err){
+                console.log(err);
+            } else {
+                console.log("Data inserted!!!");
+            }
+         });
+         res.redirect("/");
+        } else {
+            res.render("list", {listTitle : "Today", itemsToAdd : foundItems});
+        }
+    });
+
     //We call our module here 
     //const day = date.getDate();
 
-    res.render("list", {listTitle : "Today", itemsToAdd : items});
+    // res.render("list", {listTitle : "Today", itemsToAdd : items});
 });   
 
 //We check the value of button to see from which page we came from
