@@ -22,7 +22,7 @@ const articlesSchema = {
   
 const Article = mongoose.model("Article", articlesSchema);
 
-//GET API
+//GET all items API
 app.get("/articles", function(req,res){
   Article.find(function(err, foundItems){
     if (err){
@@ -33,7 +33,18 @@ app.get("/articles", function(req,res){
   });
 });
 
-//POST API
+//GET specific item 
+app.get("/articles/:articleTitle", function(req,res){
+    Article.findOne({title: req.params.articleTitle}, function(err, foundArticle){ 
+      if (err){
+        res.send(err)
+      } else {
+        res.send(foundArticle);
+      }
+    });
+});
+
+//POST item API
 //Test with Postman
 app.post("/articles", function(req, res){
     const title = req.body.title;
@@ -53,7 +64,7 @@ app.post("/articles", function(req, res){
     });
 });
 
-//DELETE API
+//DELETE all items API
 app.delete("/articles", function(req,res){
   Article.deleteMany(function(err){
     if (!err){
