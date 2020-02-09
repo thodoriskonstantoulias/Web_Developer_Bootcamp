@@ -81,12 +81,23 @@ app.get("/", function(req,res){
 //We check the value of button to see from which page we came from
 app.post("/", function(req,res){
     const item = req.body.task;
+    //Check the button's value to see where the request is coming from
+    const listName = req.body.list;
 
     //When posted the new entry will be inserted in the database
     const itemToInsert = new Item({name: item});
-    itemToInsert.save();
-    res.redirect("/");
-
+    
+    if (listName === "Today"){
+        itemToInsert.save();
+        res.redirect("/");
+    } else {
+        List.findOne({name:listName},function(err,foundList){
+            foundList.items.push(itemToInsert);
+            foundList.save();
+            res.redirect("/" + listName);
+        });
+    }
+    
     // if (req.body.list === "Work"){ 
     //     workItems.push(req.body.task); 
     //     res.redirect("/work");
