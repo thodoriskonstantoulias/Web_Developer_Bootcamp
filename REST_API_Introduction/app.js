@@ -77,6 +77,18 @@ app.put("/articles/:articleTitle", function(req,res){
     );
 });
 
+//PATCH API
+app.patch("/articles/:articleTitle", function(req,res){
+  Article.update({title: req.params.articleTitle},
+                 {$set : req.body},
+                 function(err){
+                   if (!err){
+                    res.send("Successfully patched article");
+                   }
+                 }
+    );
+});
+
 //DELETE all items API
 app.delete("/articles", function(req,res){
   Article.deleteMany(function(err){
