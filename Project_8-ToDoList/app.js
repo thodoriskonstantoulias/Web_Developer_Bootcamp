@@ -32,6 +32,14 @@ const item1 = new Item({name:"Shopping"});
 const item2 = new Item({name:"Gym"});
 const defaultItems = [item1,item2];
 
+//Create new schema for our custom elements 
+const listSchema = {
+    name : String,
+    items : [itemSchema]
+};
+
+const List = mongoose.model("List", listSchema);
+
 //Insert the above items to db
 // Item.insertMany(defaultItems,function(err){
 //     if (err){
@@ -100,8 +108,24 @@ app.post("/delete", function(req,res){
     });
 });
 
-app.get("/work", function(req,res){
-    res.render("list", {listTitle : "Work Items", itemsToAdd : workItems});
+//We need to render dynamically what the user enter in the url ex: /work or /home and change the title and leave the list as is
+app.get("/:customListName", function(req,res){
+    const userParameter = req.params.customListName;
+    
+    List.findOne({name: userParameter}, function(err,foundList){
+        if (!err){
+            if(!foundList){
+                const list = new List({
+                    name: userParameter,
+                    items : defaultItems
+                });
+                list.save();
+                res.redirect("/" + userParameter);
+            } else {
+                res.render("list", {listTitle : foundList.name, itemsToAdd : foundList.items});
+            }
+        }
+    });
 }); 
 
 app.get("/about", function(req,res){
