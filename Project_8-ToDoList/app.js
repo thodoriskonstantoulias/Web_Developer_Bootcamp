@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 //Require our new custom module
 const date = require(__dirname + "/date.js");
+const _ = require("lodash");
 
 const app = express();
 
@@ -109,19 +110,30 @@ app.post("/", function(req,res){
 
 app.post("/delete", function(req,res){
     const checkedItemId = req.body.checkbox;
-    Item.findByIdAndRemove(checkedItemId,function(err){
-        if(err){
-            console.log(err);
-        } else {
-            console.log("Successfully deleted");
-            res.redirect("/");
-        }
-    });
+    const listName = req.body.listName;
+
+    if (listName === "Today"){
+        Item.findByIdAndRemove(checkedItemId,function(err){
+            if(err){
+                console.log(err);
+            } else {
+                console.log("Successfully deleted");
+                res.redirect("/");
+            }
+        });
+    } else {
+        //Instead of finding and looping through the array and deleting the one with the id specified , mongoose has a better way
+        List.findOneAndUpdate({name:listName}, {$pull:{items:{_id:checkedItemId}}}, function(err, foundList){
+            if (!err){
+                res.redirect("/" + listName);
+            }
+        });
+    } 
 });
 
 //We need to render dynamically what the user enter in the url ex: /work or /home and change the title and leave the list as is
 app.get("/:customListName", function(req,res){
-    const userParameter = req.params.customListName;
+    const userParameter = _.capitalize(req.params.customListName);
     
     List.findOne({name: userParameter}, function(err,foundList){
         if (!err){
