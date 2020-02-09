@@ -64,6 +64,19 @@ app.post("/articles", function(req, res){
     });
 });
 
+//PUT API
+app.put("/articles/:articleTitle", function(req,res){
+  Article.update({title: req.params.articleTitle},
+                 {title: req.body.title, content: req.body.content},
+                 {overwrite : true},
+                 function(err){
+                   if (!err){
+                    res.send("Successfully updated article");
+                   }
+                 }
+    );
+});
+
 //DELETE all items API
 app.delete("/articles", function(req,res){
   Article.deleteMany(function(err){
