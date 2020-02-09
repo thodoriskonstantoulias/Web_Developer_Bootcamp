@@ -100,6 +100,17 @@ app.delete("/articles", function(req,res){
   });
 });
 
+//DELETE specific item API
+app.delete("/articles/:articleTitle", function(req,res){
+  Article.deleteOne({title: req.params.articleTitle},function(err){
+    if (!err){
+      res.send("Successfully deleted article!"); 
+    } else {
+      res.send(err);
+    }
+  });
+});
+
 app.listen(3000, function() {
 console.log("Server started on port 3000");
 });
