@@ -1,4 +1,5 @@
 //jshint esversion:6
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -14,15 +15,17 @@ app.use(express.static("public"));
 
 mongoose.connect("mongodb://localhost:27017/userDB", {useNewUrlParser: true, useUnifiedTopology: true});
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({ 
     email: String,
     password : String
 });
 
 //We want to encrypt our password
 
-//Having secret here is a vulnerability
-const secret = "Thisisoursecret";
+//Having secret here is a vulnerability - we move it to .env file -- of course in production we delete the following line .We leave it here for now.
+//const secret = "Thisisoursecret";
+
+const secret = process.env.SECRET;
 userSchema.plugin(encrypt, {secret : secret, encryptedFields: ['password']});
 
 const User = new mongoose.model("User", userSchema);
