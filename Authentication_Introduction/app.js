@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
+const encrypt = require("mongoose-encryption");
 
 const app = express();
 
@@ -13,14 +14,21 @@ app.use(express.static("public"));
 
 mongoose.connect("mongodb://localhost:27017/userDB", {useNewUrlParser: true, useUnifiedTopology: true});
 
-const userSchema = {
+const userSchema = new mongoose.Schema({
     email: String,
     password : String
-};
+});
+
+//We want to encrypt our password
+
+//Having secret here is a vulnerability
+const secret = "Thisisoursecret";
+userSchema.plugin(encrypt, {secret : secret, encryptedFields: ['password']});
 
 const User = new mongoose.model("User", userSchema);
 
-//Approach 1 : Saving passwprd as text -- Bad approach
+//Approach 1 : Saving password as text -- Bad approach
+//Approach 2 : Saving password with encryption -- Mongoose encryption
 
 app.get("/", function(req,res){
     res.render("home");
