@@ -6,7 +6,10 @@ const ejs = require("ejs");
 const mongoose = require("mongoose");
 //const encrypt = require("mongoose-encryption");
 //Better way to encrypt password is through hashing
-const md5 = require("md5");
+//const md5 = require("md5");
+//Even better way is bcrypt -- salting and hashing
+const bcrypt = require("bcrypt");
+const saltrounds = 10;
 
 const app = express();
 
@@ -35,6 +38,7 @@ const User = new mongoose.model("User", userSchema);
 //Approach 1 : Saving password as text -- Bad approach
 //Approach 2 : Saving password with encryption -- Mongoose encryption
 //Approach 3 : Saving password with hashing -- Better encryption
+//Approach 4 : Saving password with hashing and salting -- Best encryption
 
 app.get("/", function(req,res){
     res.render("home");
@@ -46,16 +50,22 @@ app.get("/login", function(req,res){
 
 app.post("/login", function(req,res){
     const username = req.body.username;
-    const password = md5(req.body.password);
+    //const password = md5(req.body.password);
+    const password = req.body.password;
 
     User.findOne({email: username}, function(err, foundUser){
         if (err){
             console.log(err);
         } else {
             if (foundUser){
-                if (foundUser.password === password){
-                    res.render("secrets");
-                }
+                bcrypt.compare(password, foundUser.password, function(err, result){
+                    if (result){
+                        res.render("secrets");
+                    }
+                });
+                // if (foundUser.password === password){
+                //     res.render("secrets");
+                // }
             }
         }
     });
@@ -66,17 +76,32 @@ app.get("/register", function(req,res){
 });
 
 app.post("/register", function(req,res){
-    const newUser = new User({
-        email : req.body.username,
-        password : md5(req.body.password)
+
+    bcrypt.hash(req.body.password,saltrounds,function(err, hash){
+        const newUser = new User({
+            email : req.body.username,
+            password : hash
+        });
+        newUser.save(function(err){
+            if (err){
+                console.log(err);
+            } else {
+                res.render("secrets");
+            }
+        });
     });
-    newUser.save(function(err){
-        if (err){
-            console.log(err);
-        } else {
-            res.render("secrets");
-        }
-    });
+
+    // const newUser = new User({
+    //     email : req.body.username,
+    //     password : md5(req.body.password)
+    // });
+    // newUser.save(function(err){
+    //     if (err){
+    //         console.log(err);
+    //     } else {
+    //         res.render("secrets");
+    //     }
+    // });
 });
 
 app.listen(3000, function() {
